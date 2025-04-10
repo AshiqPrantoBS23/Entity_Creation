@@ -1,12 +1,16 @@
 package com.myrace.ispbillingadminentitycreation.service.impl;
 
 import com.myrace.ispbillingadminentitycreation.dto.CompanyDto;
+import com.myrace.ispbillingadminentitycreation.dto.CompanyOutputDto;
+import com.myrace.ispbillingadminentitycreation.dto.CompanyUpdateDto;
 import com.myrace.ispbillingadminentitycreation.entity.Company;
 import com.myrace.ispbillingadminentitycreation.repository.CompanyRepository;
 import com.myrace.ispbillingadminentitycreation.service.CompanyService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +31,11 @@ public class CompanyServiceImpl implements CompanyService {
         company.setContactPerson(dto.getContactPerson());
         company.setContactEmail(dto.getContactEmail());
         company.setContactPhone(dto.getContactPhone());
-        return companyRepository.save(company);
+        Company saved = companyRepository.save(company);
+
+        saved.setCompanyId("CID" + String.format("%05d", saved.getId()));
+        Company updated = companyRepository.save(saved);
+        return updated;
     }
 
     @Override
@@ -37,12 +45,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> getAllCompanies() {
-        return companyRepository.findAll();
+    public List<CompanyOutputDto> getAllCompanies() {
+        List<Company> company = companyRepository.findAll();
+        List<CompanyOutputDto> dtos = new ArrayList<>();
+        company.forEach(companyOutput -> {
+            dtos.add(new CompanyOutputDto(companyOutput));
+        });
+        return  dtos;
     }
 
     @Override
-    public Company updateCompany(Long id, CompanyDto dto) {
+    public Company updateCompany(Long id, CompanyUpdateDto dto) {
         Company company = getCompanyById(id);
         company.setCompanyName(dto.getCompanyName());
         company.setDescription(dto.getDescription());

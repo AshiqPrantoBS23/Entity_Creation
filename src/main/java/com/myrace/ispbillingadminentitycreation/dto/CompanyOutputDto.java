@@ -5,9 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class CompanyDto {
+public class CompanyOutputDto {
 
-//    @NotBlank(message = "Company name is mandatory")
+    @NotBlank(message = "Company name is mandatory")
     private String companyName;
 
     private String description;
@@ -20,9 +20,9 @@ public class CompanyDto {
     @Pattern(regexp = "^\\+?\\d{10,15}$", message = "Phone number must be 10 to 15 digits, optional '+' at start")
     private String contactPhone;
 
-    public CompanyDto() {}
+    public CompanyOutputDto() {}
 
-    public CompanyDto(Company company) {
+    public CompanyOutputDto(Company company) {
         this.companyName = company.getCompanyName();
         this.description = company.getDescription();
         this.address = company.getAddress();

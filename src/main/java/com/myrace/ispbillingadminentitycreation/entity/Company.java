@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Pattern;
 @Table(name = "companies")
 public class Company extends BaseEntity {
 
-    @Column(name = "company_id", unique = true, nullable = false, updatable = false)
+    @Column(name = "company_id", unique = true, nullable = true, updatable = false)
     private String companyId; // e.g., CID00001
 
     @NotBlank(message = "Company name is mandatory")
@@ -34,10 +34,10 @@ public class Company extends BaseEntity {
     @Column(name = "contact_phone")
     private String contactPhone;
 
-    @PrePersist
-    public void generateCompanyId() {
-        this.companyId = "CID" + String.format("%05d", super.id);
-    }
+//    @PrePersist
+//    public void generateCompanyId() {
+//        this.companyId = "CID" + String.format("%05d", super.id);
+//    }
 
     public String getCompanyId() {
         return companyId;

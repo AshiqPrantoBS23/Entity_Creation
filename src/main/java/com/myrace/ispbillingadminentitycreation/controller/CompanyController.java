@@ -1,6 +1,8 @@
 package com.myrace.ispbillingadminentitycreation.controller;
 
 import com.myrace.ispbillingadminentitycreation.dto.CompanyDto;
+import com.myrace.ispbillingadminentitycreation.dto.CompanyOutputDto;
+import com.myrace.ispbillingadminentitycreation.dto.CompanyUpdateDto;
 import com.myrace.ispbillingadminentitycreation.entity.Company;
 import com.myrace.ispbillingadminentitycreation.service.CompanyService;
 import jakarta.validation.Valid;
@@ -30,12 +32,12 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Company>> getAll() {
+    public ResponseEntity<List<CompanyOutputDto>> getAll() {
         return ResponseEntity.ok(companyService.getAllCompanies());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Company> update(@PathVariable Long id, @Valid @RequestBody CompanyDto dto) {
+    public ResponseEntity<Company> update(@PathVariable Long id, @Valid @RequestBody CompanyUpdateDto dto) {
         return ResponseEntity.ok(companyService.updateCompany(id, dto));
     }
 

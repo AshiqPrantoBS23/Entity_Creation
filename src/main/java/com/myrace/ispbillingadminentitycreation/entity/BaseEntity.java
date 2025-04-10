@@ -43,4 +43,24 @@ public abstract class BaseEntity {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 }
