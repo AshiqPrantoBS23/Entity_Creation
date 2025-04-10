@@ -7,7 +7,6 @@ import com.myrace.ispbillingadminentitycreation.entity.Company;
 import com.myrace.ispbillingadminentitycreation.repository.CompanyRepository;
 import com.myrace.ispbillingadminentitycreation.service.CompanyService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,11 +30,10 @@ public class CompanyServiceImpl implements CompanyService {
         company.setContactPerson(dto.getContactPerson());
         company.setContactEmail(dto.getContactEmail());
         company.setContactPhone(dto.getContactPhone());
-        Company saved = companyRepository.save(company);
+        company = companyRepository.save(company);
 
-        saved.setCompanyId("CID" + String.format("%05d", saved.getId()));
-        Company updated = companyRepository.save(saved);
-        return updated;
+        company = companyRepository.save(company.setCompanyId("CID" + String.format("%05d", company.getId())));
+        return company;
     }
 
     @Override
