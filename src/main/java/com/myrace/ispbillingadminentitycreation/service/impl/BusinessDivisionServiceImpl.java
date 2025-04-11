@@ -30,9 +30,12 @@ public class BusinessDivisionServiceImpl implements BusinessDivisionService {
     public BusinessDivision update(Long id, BusinessUpdateDivisionDto dto) {
         BusinessDivision division = repository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Business Division not found"));
-
-        division.setBusinessTypeName(dto.getBusinessTypeName());
-        division.setDescription(dto.getDescription());
+        if(dto.getBusinessTypeName() != null) {
+            division.setBusinessTypeName(dto.getBusinessTypeName());
+        }
+        if(dto.getDescription() != null) {
+            division.setDescription(dto.getDescription());
+        }
 
         return repository.save(division);
     }
