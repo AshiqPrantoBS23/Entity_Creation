@@ -6,8 +6,12 @@ import org.springframework.data.domain.Pageable;
 
 public interface BillingFrequencyService {
     BillingFrequencyDto create(CreateBillingFrequencyDto dto);
+
     BillingFrequencyDto update(Long id, UpdateBillingFrequencyDto dto);
-    Page<BillingFrequencyDto> getAll(Pageable pageable);
+
+    Page<BillingFrequencyDto> getAll(String search, Integer duration, Pageable pageable);
+
     BillingFrequencyDto getById(Long id);
+
     void softDelete(Long id);
 }

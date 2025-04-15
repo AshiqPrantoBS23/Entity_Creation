@@ -42,8 +42,19 @@ public class BillingFrequencyServiceImpl implements BillingFrequencyService {
     }
 
     @Override
-    public Page<BillingFrequencyDto> getAll(Pageable pageable) {
-        return repository.findAllByIsDeletedFalse(pageable).map(mapper::toDto);
+    public Page<BillingFrequencyDto> getAll(String search, Integer duration, Pageable pageable) {
+        Page<BillingFrequency> result;
+
+        if (search != null && duration != null) {
+            result = repository.findByFrequencyDaysNameContainingIgnoreCaseAndDurationAndIsDeletedFalse(search, duration, pageable);
+        } else if (search != null) {
+            result = repository.findByFrequencyDaysNameContainingIgnoreCaseAndIsDeletedFalse(search, pageable);
+        } else if(duration != null) {
+            result = repository.findByDurationAndIsDeletedFalse(duration, pageable);
+        } else {
+            result = repository.findAllByIsDeletedFalse(pageable);
+        }
+        return result.map(mapper::toDto);
     }
 
     @Override
