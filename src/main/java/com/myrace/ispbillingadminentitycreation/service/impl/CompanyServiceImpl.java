@@ -7,6 +7,8 @@ import com.myrace.ispbillingadminentitycreation.entity.Company;
 import com.myrace.ispbillingadminentitycreation.repository.CompanyRepository;
 import com.myrace.ispbillingadminentitycreation.service.CompanyService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,13 +45,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<CompanyOutputDto> getAllCompanies() {
-        List<Company> company = companyRepository.findAll();
-        List<CompanyOutputDto> dtos = new ArrayList<>();
-        company.forEach(companyOutput -> {
-            dtos.add(new CompanyOutputDto(companyOutput));
-        });
-        return  dtos;
+    public Page<CompanyOutputDto> getAllCompanies(String name, Pageable pageable) {
+        Page<Company> companies;
+
+        if (name != null && !name.isBlank()) {
+            companies = companyRepository.findByCompanyNameContainingIgnoreCaseAndIsDeletedFalse(name, pageable);
+        } else {
+            companies = companyRepository.findAllByIsDeletedFalse(pageable);
+        }
+
+        return companies.map(CompanyOutputDto::new);
     }
 
     @Override

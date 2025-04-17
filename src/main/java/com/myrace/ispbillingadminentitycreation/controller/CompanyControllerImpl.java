@@ -6,6 +6,9 @@ import com.myrace.ispbillingadminentitycreation.dto.CompanyUpdateDto;
 import com.myrace.ispbillingadminentitycreation.entity.Company;
 import com.myrace.ispbillingadminentitycreation.service.CompanyService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +16,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/company")
-public class CompanyController {
+public class CompanyControllerImpl {
 
     private final CompanyService companyService;
 
-    public CompanyController(CompanyService companyService) {
+    public CompanyControllerImpl(CompanyService companyService) {
         this.companyService = companyService;
     }
 
@@ -32,8 +35,14 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CompanyOutputDto>> getAll() {
-        return ResponseEntity.ok(companyService.getAllCompanies());
+    public ResponseEntity<Page<CompanyOutputDto>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String name
+            ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CompanyOutputDto> result = companyService.getAllCompanies(name, pageable);
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping("/{id}")
